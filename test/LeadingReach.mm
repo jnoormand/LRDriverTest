@@ -10,6 +10,8 @@
 #include "xmlParser.h"
 #import "LRQueue.h"
 #import "LREvent.h"
+#import "AssetModel.h"
+#import "AssetList.h"
 
 @implementation LeadingReach
 @synthesize delegate;
@@ -18,6 +20,7 @@
 -(id)init {
     receivedData = [[NSMutableData alloc] init];
     connectionLock = false;
+    assetList = [[AssetList alloc] init];
     return self;
 }
 
@@ -78,10 +81,40 @@
     }
 }
 
--(void)getImage:(NSString *)path {
-    state = GETTING_IMAGE;
+-(void)getImage:(NSString *)path withTitle:(NSString*)title {
+    state = GETTING_ASSET;
     NSLog(path);
     NSString *urlString = [NSString stringWithFormat:@"%@",path];
+    currentString = title;
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc]initWithURL:[NSURL URLWithString:urlString]];
+    //NSString * bodyString = @"op=getassets&kiosk_id=14512&user=justin&pass=yongqupoke*1";
+    //NSData *requestBody = [[NSData alloc] initWithData:[bodyString dataUsingEncoding:NSUTF8StringEncoding]];
+    [request setHTTPMethod:@"GET"];
+    //[request addValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    //[request setHTTPBody:requestBody];
+    
+    NSURLConnection *connection = nil;
+    if (!connectionLock) {
+        NSLog(@"Connection locked.");
+        connection = [[NSURLConnection alloc]initWithRequest:request delegate:self startImmediately:YES];
+    }else {
+        NSLog(@"Could not connect: connection locked.");
+    }
+    
+    if (connection) {
+        connectionLock = YES;
+        [receivedData setLength:0];
+    }
+    else {
+        NSLog(@"Could not connect: unknown error.");
+    }
+}
+
+-(void)getThumbnail:(NSString *)path withTitle:(NSString*)title {
+    state = GETTING_THUMBNAIL;
+    NSLog(path);
+    NSString *urlString = [NSString stringWithFormat:@"%@",path];
+    currentString = title;
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc]initWithURL:[NSURL URLWithString:urlString]];
     //NSString * bodyString = @"op=getassets&kiosk_id=14512&user=justin&pass=yongqupoke*1";
     //NSData *requestBody = [[NSData alloc] initWithData:[bodyString dataUsingEncoding:NSUTF8StringEncoding]];
@@ -167,19 +200,37 @@
             // get all children
             for(int i = 0; i < y.nChildNode() - 1; i++) {
                 XMLNode child = y.getChildNode("node", i);
+                XMLNode ID = child.getChildNode("asset_id");
+                XMLNode descr = child.getChildNode("description");
                 XMLNode thumb = child.getChildNode("asset_thumbnail");
-                XMLNode asset = child.getChildNode("filepath");
+                XMLNode filepath = child.getChildNode("filepath");
+                XMLNode title = child.getChildNode("title");
+                XMLNode lastupdated = child.getChildNode("updated");
+                XMLNode tags = child.getChildNode("asset_tags");
+                XMLNode type = child.getChildNode("type");
+                XMLNode category = child.getChildNode("categories");
+                AssetModel * newModel = [[AssetModel alloc] init];
+                newModel.assetID = [[NSString alloc] initWithCString:ID.getText() encoding:NSUTF8StringEncoding];
+                newModel.assetTitle = [[NSString alloc] initWithCString:title.getText() encoding:NSUTF8StringEncoding];
+                newModel.assetFilePath = [[NSString alloc] initWithCString:filepath.getText() encoding:NSUTF8StringEncoding];
+                newModel.assetDescription = [[NSString alloc] initWithCString:ID.getText() encoding:NSUTF8StringEncoding];
+                newModel.lastUpdated = [[NSString alloc] initWithCString:lastupdated.getText() encoding:NSUTF8StringEncoding];
+                newModel.thumbnailURL = [[NSString alloc] initWithCString:thumb.getText() encoding:NSUTF8StringEncoding];
+                newModel.assetType = [[NSString alloc] initWithCString:type.getText() encoding:NSUTF8StringEncoding];
+                [assetList insertAsset:newModel];
                 printf(thumb.getText());
                 printf("\n");
                 LREvent * eventGetThumb = [[LREvent alloc] init];
-                eventGetThumb.eventType = GET_IMAGE;
+                eventGetThumb.title = newModel.assetTitle;
+                eventGetThumb.eventType = GET_THUMBNAIL;
                 NSString * passString1 = [[NSString alloc] initWithCString:thumb.getText() encoding:NSUTF8StringEncoding];
                 NSLog(passString1);
                 eventGetThumb.queryString = passString1;
                 [queue addEvent:eventGetThumb];
                 LREvent * eventGetImage = [[LREvent alloc] init];
-                eventGetImage.eventType = GET_IMAGE;
-                NSString * passString2 = [[NSString alloc] initWithCString:asset.getText() encoding:NSUTF8StringEncoding];
+                eventGetImage.title = newModel.assetTitle;
+                eventGetImage.eventType = GET_ASSET;
+                NSString * passString2 = [[NSString alloc] initWithCString:filepath.getText() encoding:NSUTF8StringEncoding];
                 NSLog(passString2);
                 eventGetImage.queryString = passString2;
                 [queue addEvent:eventGetImage];
@@ -197,11 +248,20 @@
             break;
         case UPDATING_PERSON:
             break;
-        case GETTING_IMAGE:
+        case GETTING_ASSET:
         {
-            UIImageView * iview = [[UIImageView alloc] initWithImage:[[UIImage alloc] initWithData:receivedData]];
-        }
+            AssetModel * model = [assetList getAssetByTitle:currentString];
+            model.assetData = [[NSMutableData alloc] initWithData:receivedData];
+            //UIImageView * iview = [[UIImageView alloc] initWithImage:[[UIImage alloc] initWithData:receivedData]];
             break;
+        }
+        case GETTING_THUMBNAIL:
+        {
+            AssetModel * model = [assetList getAssetByTitle:currentString];
+            model.assetThumbnail = [[UIImage alloc] initWithData:receivedData];
+            break;
+        }
+            
     }
     /*NSDictionary *gitanaResponse = [[NSDictionary alloc]initWithDictionary:[receivedData objectFromJSONData]];
     

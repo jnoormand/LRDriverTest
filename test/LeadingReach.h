@@ -9,7 +9,8 @@
 #import <Foundation/Foundation.h>
 #define baseURL @"https://leadingreach.com/main.php"
 @class LRQueue;
-typedef enum LRState {GETTING_ASSETS,GETTING_PERSONS,UPDATING_PERSON,CHECKING_LOGIN,CREATING_PERSON,GETTING_IMAGE} LRState;
+@class AssetList;
+typedef enum LRState {GETTING_ASSETS,GETTING_PERSONS,UPDATING_PERSON,CHECKING_LOGIN,CREATING_PERSON,GETTING_ASSET, GETTING_THUMBNAIL} LRState;
 
 @interface LeadingReach : NSObject {
     LRState state;
@@ -21,7 +22,10 @@ typedef enum LRState {GETTING_ASSETS,GETTING_PERSONS,UPDATING_PERSON,CHECKING_LO
     // URL Loading variables;
     int statusCode;
     bool connectionLock;
+    AssetList * assetList;
     NSMutableData * receivedData;
+    NSString * currentString;
+    
 }
 @property (nonatomic,retain) id delegate;
 @property (nonatomic,retain) LRQueue * queue;
@@ -32,7 +36,7 @@ typedef enum LRState {GETTING_ASSETS,GETTING_PERSONS,UPDATING_PERSON,CHECKING_LO
 -(void)getAllPersons;
 -(void)updatePerson:(NSMutableDictionary *)data;
 -(void)getAllAssets;
--(void)getImage:(NSString *)path;
-
+-(void)getImage:(NSString *)path withTitle:(NSString*)title;
+-(void)getThumbnail:(NSString *)path withTitle:(NSString*)title;
 
 @end

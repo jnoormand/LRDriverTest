@@ -13,5 +13,6 @@
 @synthesize personType;
 @synthesize queryString;
 @synthesize data;
+@synthesize title;
 
 @end

@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		292E66D314686EE600174AD4 /* AssetModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 292E66D214686EE600174AD4 /* AssetModel.m */; };
+		292E66D71468710A00174AD4 /* AssetList.m in Sources */ = {isa = PBXBuildFile; fileRef = 292E66D61468710A00174AD4 /* AssetList.m */; };
 		29CAF824145B563600EB1268 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29CAF823145B563600EB1268 /* UIKit.framework */; };
 		29CAF826145B563600EB1268 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29CAF825145B563600EB1268 /* Foundation.framework */; };
 		29CAF828145B563600EB1268 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29CAF827145B563600EB1268 /* CoreGraphics.framework */; };
@@ -37,6 +39,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		292E66D114686EE600174AD4 /* AssetModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AssetModel.h; sourceTree = "<group>"; };
+		292E66D214686EE600174AD4 /* AssetModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AssetModel.m; sourceTree = "<group>"; };
+		292E66D51468710A00174AD4 /* AssetList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AssetList.h; sourceTree = "<group>"; };
+		292E66D61468710A00174AD4 /* AssetList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AssetList.m; sourceTree = "<group>"; };
 		29CAF81F145B563600EB1268 /* test.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = test.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		29CAF823145B563600EB1268 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		29CAF825145B563600EB1268 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -128,6 +134,10 @@
 				29CAF835145B563600EB1268 /* MainStoryboard.storyboard */,
 				29CAF838145B563600EB1268 /* ViewController.h */,
 				29CAF839145B563600EB1268 /* ViewController.m */,
+				292E66D114686EE600174AD4 /* AssetModel.h */,
+				292E66D214686EE600174AD4 /* AssetModel.m */,
+				292E66D51468710A00174AD4 /* AssetList.h */,
+				292E66D61468710A00174AD4 /* AssetList.m */,
 				29CAF858145B565300EB1268 /* LeadingReach.h */,
 				29CAF859145B565D00EB1268 /* LeadingReach.mm */,
 				29DF69841460489B000C9308 /* LRQueue.h */,
@@ -284,6 +294,8 @@
 				29DF6983145F4C03000C9308 /* xmlParser.cpp in Sources */,
 				29DF69861460489B000C9308 /* LRQueue.m in Sources */,
 				29DF6991146049F1000C9308 /* LREvent.m in Sources */,
+				292E66D314686EE600174AD4 /* AssetModel.m in Sources */,
+				292E66D71468710A00174AD4 /* AssetList.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

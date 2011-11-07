@@ -30,8 +30,11 @@
     if([queue count] == 0) return 0;
     LREvent * currentEvent = [queue objectAtIndex:0];
     switch(currentEvent.eventType) {
-        case GET_IMAGE:
-            [driver getImage:currentEvent.queryString];
+        case GET_ASSET:
+            [driver getImage:currentEvent.queryString withTitle:currentEvent.title];
+            break;
+        case GET_THUMBNAIL:
+            [driver getThumbnail:currentEvent.queryString withTitle:currentEvent.title];
             break;
         case CHECK_LOGIN:
             [driver loginUser:(NSMutableDictionary*)currentEvent.data];
