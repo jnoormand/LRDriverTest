@@ -20,11 +20,13 @@
     // Override point for customization after application launch.
     //LeadingReach * testObject = [[LeadingReach alloc] init];
     //[testObject getAllAssets];
-    LRQueue * queue = [[LRQueue alloc] initWithDelegate:self];
+    /*LRQueue * queue = [[LRQueue alloc] initWithDelegate:self];
     LREvent * event = [[LREvent alloc] init];
     event.eventType = GET_ASSETS;
     [queue addEvent:event];
-    [queue processQueue];
+    [queue processQueue];*/
+    LeadingReach * driver = [[LeadingReach alloc] init];
+    [driver getAllAssets];
     return YES;
 }
 							

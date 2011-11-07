@@ -15,11 +15,11 @@
 @synthesize queue;
 @synthesize delegate;
 
--(id) initWithDelegate:(id)del {
-    delegate = del;
-    driver = [[LeadingReach alloc] init];
-    driver.delegate = delegate;
-    driver.queue = self;
+-(id) initWithDriver:(id)initDriver {
+    delegate = nil;
+    driver = initDriver;
+    //driver.delegate = delegate;
+    //driver.queue = self;
     queue = [[NSMutableArray alloc] init];
     return self;
 }

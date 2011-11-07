@@ -20,7 +20,8 @@
 -(id)init {
     receivedData = [[NSMutableData alloc] init];
     connectionLock = false;
-    assetList = [[AssetList alloc] init];
+    queue = [[LRQueue alloc] initWithDriver:self];
+    //assetList = [[AssetList alloc] init];
     return self;
 }
 
